@@ -5,13 +5,14 @@
     <div class="max-w-screen-2xl mx-auto p-4 md:p-6 2xl:p-10">
         <!-- Breadcrumb Start -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
-            <h2 class="font-semibold text-title-md2 text-black dark:text-white">Rent List</h2>
+            <h2 class="font-semibold text-title-md2 text-black dark:text-white">{{ $title }}</h2>
 
             <nav>
                 <ol class="flex items-center gap-2">
                     <li><a href="{{ route('dashboard') }}">Dashboard /</a></li>
-                    <li>Rent /</li>
-                    <li class="text-primary"><a href="{{ route('rent.index') }}" class="text-primary">Rent List</a></li>
+                    <li>{{ $parent }} /</li>
+                    <li class="text-primary"><a href="{{ route('inventories.index') }}" class="text-primary">{{ $title
+                            }}</a></li>
                 </ol>
             </nav>
         </div>
@@ -28,13 +29,10 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Car</th>
-                                <th>User</th>
-                                <th>Date Start</th>
-                                <th>Date End</th>
-                                <th>Date Return</th>
-                                <th>Total</th>
-                                <th>Status</th>
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Stock</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -61,55 +59,46 @@
                 currency: 'IDR',
             });
 
-       $('#tbl_list').DataTable({
+       var tbl_lsit = $('#tbl_list').DataTable({
             processing: true,
             serverSide: true,
             ajax: '{{ url()->current() }}',
             columns: [
                 {data: 'id', name: 'id'},
-                {data: 'car', name: 'car'},
-                {data: 'user', name: 'user'},
-                {data: 'date_start', name: 'date_start'},
-                {data: 'date_end', name: 'date_end'},
-                {data: 'date_return', name: 'date_return'},
-                {data: 'total_price', name: 'total', render: function(data, type, full, meta){
+                {data: 'code', name: 'code'},
+                {data: 'name', name: 'name'},
+                {data: 'price', name: 'price', render: function(data, type, full, meta){
                     return formatter.format(data);
                 }},
-                {data: 'status', name: 'status', render: function(data, type, full, meta){
-                    if(data == "in rental") {
-                        return "<span style=\"background-color: #3dd8e0; color: #fff; padding: 3px 8px; border-radius: 4px; display: inline-block;\">In Rental</span>";
-                    } else if(data == "returned") {
-                        return "<span style=\"background-color: #39e346; color: #fff; padding: 3px 8px; border-radius: 4px; display: inline-block;\">Returned</span>";
-                    }
-                }},
+                {data: 'stock', name: 'stock'},
                 {data: null, name: 'action', orderable: false, searchable: false, render: function(data, type, full, meta){
-                    $output = "<a href=\"javascript:void(0)\" onClick=\"showRent('" + full.car + "', '" + full.user + "', '" + full.date_start + "', '" + full.date_end + "', '" + full.date_return + "', '" + full.total_price + "', '" + full.status + "')\" class=\"hover:text-primary\" title=\"View Details\"><i class=\"fi fi-rr-eye\"></i></a>&nbsp;&nbsp;";
-                    if (full.status == "in rental" && "{{ session('role') }}" == "admin") {
-                        $output += "<a href=\"javascript:void(0)\" onClick=\"returnCar(" + full.id + ")\" class=\"hover:text-primary\"> <i class=\"fi fi-rr-car-garage\" title=\"Return the Car\"></i></a>&nbsp;&nbsp;";
-                    }
+                    $output = "<a href=\"{{ route('inventories.update') }}/" + full.id + "\" class=\"hover:text-primary\" title=\"Update Item\"><i class=\"fi fi-rr-edit\"></i></a>&nbsp;&nbsp;";
+                    $output += "<a href=\"javascript:void(0)\" onClick=\"updateStock('" + full.id + "', '" + full.name + "', '" + full.stock + "')\" class=\"hover:text-primary\" title=\"Update Stock\"><i class=\"fi fi-rr-warehouse-alt\"></i></a>&nbsp;&nbsp;";
+                    $output += "<a href=\"javascript:void(0)\" onClick=\"removeItem('" + full.id + "', '" + full.name + "')\" class=\"hover:text-primary\" title=\"Remove Item\"><i class=\"fi fi-rr-trash\"></i></a>&nbsp;&nbsp;";
                     return $output;
                 }},
             ]
         });
     });
 
-    @if(session('role') == 'admin')
-    function returnCar(id) {
+    function updateStock(id, name, stock) {
         Swal.fire({
-            title: 'Are you sure this car has been returned by the user?',
-            text: 'This action cannot be undone!',
-            icon: 'warning',
+            title: 'Input new stock for ' + name,
+            input: 'text',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            inputValue: stock,
             showCancelButton: true,
-            confirmButtonText: 'Yes, return it!',
-            cancelButtonText: 'No, cancel',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
+            confirmButtonText: 'Update Stock',
+            showLoaderOnConfirm: true,
+            preConfirm: (stock) => {
                 $.ajax({
-                    url: "{{ route('api.rent.return') }}/" + id,
+                    url: "{{ route('api.inventories.update.stock') }}/" + id,
                     type: "POST",
                     data: {
                         _token: "{{ csrf_token() }}",
+                        stock: stock,
                         _method: "PUT",
                     },
                     success: function(response) {
@@ -120,7 +109,50 @@
                             showCancelButton: false,
                             confirmButtonText: 'OK',
                         }).then(function() {
-                            window.location.href = "{{ route('rent.index') }}";
+                            $('#tbl_list').DataTable().ajax.reload();
+                        });
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Something went wrong!',
+                            icon: 'error',
+                            showCancelButton: false,
+                            confirmButtonText: 'OK',
+                        });
+                    }
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+            });
+    }
+
+    function removeItem(id, name) {
+        Swal.fire({
+            title: 'Are you sure want to delete this item?',
+            text: 'This action cannot be undone!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Delete',
+            cancelButtonText: 'Cancel',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{{ route('api.inventories.destroy') }}/" + id,
+                    type: "DELETE",
+                    data: {
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            title: 'Success!',
+                            text: 'Item has been deleted!',
+                            icon: 'success',
+                            showCancelButton: false,
+                            confirmButtonText: 'OK',
+                        }).then(function() {
+                            $('#tbl_list').DataTable().ajax.reload();
                         });
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
@@ -135,44 +167,6 @@
                 });
             }
         });
-    }
-    @endif
-
-    function showRent(car, user, date_start, date_end, date_return, total, status) {
-        Swal.fire({
-            html: '<table class="modal-table">' +
-                '    <tr>' +
-                '        <td><b>Car</b></td>' +
-                '        <td>' + car + '</td>' +
-                '    </tr>' +
-                '    <tr>' +
-                '        <td><b>User</b></td>' +
-                '        <td>' + user + '</td>' +
-                '    </tr>' +
-                '    <tr>' +
-                '        <td><b>Date Start</b></td>' +
-                '        <td>' + date_start + '</td>' +
-                '    </tr>' +
-                '    <tr>' +
-                '        <td><b>Date End</b></td>' +
-                '        <td>' + date_end + '</td>' +
-                '    </tr>' +
-                '    <tr>' +
-                '        <td><b>Date Return</b></td>' +
-                '        <td>' + date_return + '</td>' +
-                '    </tr>' +
-                '    <tr>' +
-                '        <td><b>Total</b></td>' +
-                '        <td>' + total + '</td>' +
-                '    </tr>' +
-                '    <tr>' +
-                '        <td><b>Status</b></td>' +
-                '        <td>' + status + '</td>' +
-                '    </tr>' +
-                '</table>',
-            showCloseButton: true,
-            showConfirmButton: false,
-        })
     }
 
 </script>

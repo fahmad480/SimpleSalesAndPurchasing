@@ -209,7 +209,7 @@
                 error: function(data) {
                     Swal.fire({
                         title: "Error!",
-                        text: "Something went wrong!",
+                        text: data.responseJSON.message,
                         icon: "error",
                         button: "OK",
                     });

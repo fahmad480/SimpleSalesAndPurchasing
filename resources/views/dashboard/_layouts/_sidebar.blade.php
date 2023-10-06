@@ -60,11 +60,11 @@
                             <ul class="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
                                 <li>
                                     <a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white {{ ($menu === 'inventoriesList') ? '!text-white' : '' }}"
-                                        href="#">Inventories</a>
+                                        href="{{ route('inventories.index') }}">Inventories</a>
                                 </li>
                                 <li>
                                     <a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white {{ ($menu === 'inventoriesAdd') ? '!text-white' : '' }}"
-                                        href="#">Add New Inventory</a>
+                                        href="{{ route('inventories.add') }}">Add New Inventory</a>
                                 </li>
                             </ul>
                         </div>

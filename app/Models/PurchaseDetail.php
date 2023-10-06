@@ -9,6 +9,8 @@ class PurchaseDetail extends Model
 {
     use HasFactory;
 
+    protected $table = 'purchases_details';
+
     /**
      * The attributes that are mass assignable.
      *
