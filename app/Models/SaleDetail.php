@@ -19,7 +19,7 @@ class SaleDetail extends Model
     protected $fillable = [
         'sale_id',
         'inventory_id',
-        'quantity',
+        'qty',
         'price',
     ];
 

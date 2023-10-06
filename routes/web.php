@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\SaleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,5 +41,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/', [InventoryController::class, 'index'])->name('index');
         Route::get('/add', [InventoryController::class, 'add'])->name('add');
         Route::get('/update/{inventory?}', [InventoryController::class, 'update'])->name('update');
+    });
+
+    Route::name('sales.')->prefix('sales')->group(function() {
+        Route::get('/details/{sale?}', [SaleController::class, 'view'])->name('view');
+        Route::get('/', [SaleController::class, 'index'])->name('index');
+        Route::get('/add', [SaleController::class, 'add'])->name('add');
+        Route::get('/update/{sale?}', [SaleController::class, 'update'])->name('update');
     });
 });

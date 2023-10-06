@@ -34,7 +34,7 @@
                                     Item Code <span class="text-meta-1">*</span>
                                 </label>
                                 <input type="text" placeholder="Input Item Code" id="code" name="code"
-                                    value="{{ $menu === "inventoriesUpdate" ? $inventory->code : "" }}" required
+                                    value="{{ $menu === " inventoriesUpdate" ? $inventory->code : "" }}" required
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium
                                 outline-none transition focus:border-primary active:border-primary
                                 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark
@@ -46,7 +46,7 @@
                                     Item Name <span class="text-meta-1">*</span>
                                 </label>
                                 <input type="text" placeholder="Input Item Name" id="name" name="name"
-                                    value="{{ $menu === "inventoriesUpdate" ? $inventory->name : "" }}" required
+                                    value="{{ $menu === " inventoriesUpdate" ? $inventory->name : "" }}" required
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium
                                 outline-none transition focus:border-primary active:border-primary
                                 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark
@@ -58,7 +58,7 @@
                                     Item Price <span class="text-meta-1">*</span>
                                 </label>
                                 <input type="number" placeholder="Input Item Price" id="price" name="price"
-                                    value="{{ $menu === "inventoriesUpdate" ? $inventory->price : "" }}" required
+                                    value="{{ $menu === " inventoriesUpdate" ? $inventory->price : "" }}" required
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium
                                 outline-none transition focus:border-primary active:border-primary
                                 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark
@@ -70,7 +70,7 @@
                                     Item Stock <span class="text-meta-1">*</span>
                                 </label>
                                 <input type="number" placeholder="Input Item Stock" id="stock" name="stock"
-                                    value="{{ $menu === "inventoriesUpdate" ? $inventory->stock : "" }}" required
+                                    value="{{ $menu === " inventoriesUpdate" ? $inventory->stock : "" }}" required
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium
                                 outline-none transition focus:border-primary active:border-primary
                                 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark
@@ -90,7 +90,7 @@
 
                             <button class="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray"
                                 id="addnewitem">
-                                {{ $menu === "rentUpdate" ? "Update Item" : "Add Item" }}
+                                {{ $menu === "inventoriesUpdate" ? "Update Item" : "Add Item" }}
                             </button>
                         </div>
                     </form>

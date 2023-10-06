@@ -127,6 +127,7 @@ class PurchasesController extends Controller
                 foreach($request->items as $item) {
                     $inventory = Inventory::find($item['inventory_id']);
                     if($inventory) {
+                        $inventory->stock = $inventory->stock - $purchases->purchaseDetails->where('inventory_id', $item['inventory_id'])->first()->qty;
                         $inventory->stock = $inventory->stock + $item['qty'];
                         $inventory->save();
                     } else {

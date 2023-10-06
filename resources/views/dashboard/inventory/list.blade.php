@@ -11,7 +11,8 @@
                 <ol class="flex items-center gap-2">
                     <li><a href="{{ route('dashboard') }}">Dashboard /</a></li>
                     <li>{{ $parent }} /</li>
-                    <li class="text-primary"><a href="{{ route('inventories.index') }}" class="text-primary">{{ $title
+                    <li class="text-primary"><a href="{{ route(Route::current()->getName()) }}" class="text-primary">{{
+                            $title
                             }}</a></li>
                 </ol>
             </nav>
@@ -192,24 +193,6 @@
         border: 1px solid #ccc;
         border-radius: 4px;
         font-size: 14px;
-    }
-</style>
-<style>
-    .modal-table {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-    .modal-table td,
-    .modal-table th {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
-    }
-
-    .modal-table tr:nth-child(even) {
-        background-color: #dddddd;
     }
 </style>
 @endpush

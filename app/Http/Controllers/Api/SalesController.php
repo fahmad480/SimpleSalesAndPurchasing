@@ -43,6 +43,9 @@ class SalesController extends Controller
     public function store(Request $request)
     {
         try {
+            $items = json_decode($request->input('items'), true);
+            $request->merge(['items' => $items]);
+
             $this->validate($request, [
                 'number' => 'required',
                 'date' => 'required|date',
@@ -100,6 +103,9 @@ class SalesController extends Controller
     public function update(Request $request, $sales)
     {
         try {
+            $items = json_decode($request->input('items'), true);
+            $request->merge(['items' => $items]);
+
             $this->validate($request, [
                 'number' => 'required',
                 'date' => 'required|date',
@@ -121,8 +127,18 @@ class SalesController extends Controller
 
                 foreach($request->items as $item) {
                     $inventory = Inventory::find($item['inventory_id']);
-                    $inventory->stock = $inventory->stock - $item['qty'];
-                    $inventory->save();
+                    if($inventory) {
+                        $inventory->stock = $inventory->stock + $sales->saleDetails->where('inventory_id', $item['inventory_id'])->first()->qty;
+                        $inventory->stock = $inventory->stock - $item['qty'];
+                        $inventory->save();
+                    } else {
+                        DB::rollBack();
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Inventory not found',
+                            'data' => ''
+                        ], 404);
+                    }
 
                     $item = SaleDetail::create([
                         'sale_id' => $sales->id,

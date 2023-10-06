@@ -11,7 +11,8 @@
                 <ol class="flex items-center gap-2">
                     <li><a href="{{ route('dashboard') }}">Dashboard /</a></li>
                     <li>{{ $parent }} /</li>
-                    <li class="text-primary"><a href="{{ route('inventories.index') }}" class="text-primary">{{ $title
+                    <li class="text-primary"><a href="{{ route(Route::current()->getName()) }}" class="text-primary">{{
+                            $title
                             }}</a></li>
                 </ol>
             </nav>
@@ -29,10 +30,10 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Code</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Stock</th>
+                                <th>Input By</th>
+                                <th>Number</th>
+                                <th>Total</th>
+                                <th>Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -59,77 +60,33 @@
                 currency: 'IDR',
             });
 
-       var tbl_lsit = $('#tbl_list').DataTable({
+       $('#tbl_list').DataTable({
             processing: true,
             serverSide: true,
             ajax: '{{ url()->current() }}',
             columns: [
-                {data: 'id', name: 'id'},
-                {data: 'code', name: 'code'},
-                {data: 'name', name: 'name'},
-                {data: 'price', name: 'price', render: function(data, type, full, meta){
+                {data: null, name: 'id', "render": function ( data, type, full, meta ) {
+                    return  meta.row + 1;
+                }},
+                {data: 'user', name: 'user'},
+                {data: 'number', name: 'number'},
+                {data: 'total', name: 'total', render: function(data, type, full, meta){
                     return formatter.format(data);
                 }},
-                {data: 'stock', name: 'stock'},
+                {data: 'date', name: 'date'},
                 {data: null, name: 'action', orderable: false, searchable: false, render: function(data, type, full, meta){
-                    $output = "<a href=\"{{ route('inventories.update') }}/" + full.id + "\" class=\"hover:text-primary\" title=\"Update Item\"><i class=\"fi fi-rr-edit\"></i></a>&nbsp;&nbsp;";
-                    $output += "<a href=\"javascript:void(0)\" onClick=\"updateStock('" + full.id + "', '" + full.name + "', '" + full.stock + "')\" class=\"hover:text-primary\" title=\"Update Stock\"><i class=\"fi fi-rr-warehouse-alt\"></i></a>&nbsp;&nbsp;";
-                    $output += "<a href=\"javascript:void(0)\" onClick=\"removeItem('" + full.id + "', '" + full.name + "')\" class=\"hover:text-primary\" title=\"Remove Item\"><i class=\"fi fi-rr-trash\"></i></a>&nbsp;&nbsp;";
+                    $output = "<a href=\"{{ route('sales.view') }}/" + full.id + "\" class=\"hover:text-primary\" title=\"View Sales\"><i class=\"fi fi-rr-eye\"></i></a>&nbsp;&nbsp;";
+                    $output += "<a href=\"{{ route('sales.update') }}/" + full.id + "\" class=\"hover:text-primary\" title=\"Update Sales\"><i class=\"fi fi-rr-edit\"></i></a>&nbsp;&nbsp;";
+                    $output += "<a href=\"javascript:void(0)\" onClick=\"removeItem('" + full.id + "', '" + full.name + "')\" class=\"hover:text-primary\" title=\"Remove Sales\"><i class=\"fi fi-rr-trash\"></i></a>&nbsp;&nbsp;";
                     return $output;
                 }},
             ]
         });
     });
 
-    function updateStock(id, name, stock) {
-        Swal.fire({
-            title: 'Input new stock for ' + name,
-            input: 'text',
-            inputAttributes: {
-                autocapitalize: 'off'
-            },
-            inputValue: stock,
-            showCancelButton: true,
-            confirmButtonText: 'Update Stock',
-            showLoaderOnConfirm: true,
-            preConfirm: (stock) => {
-                $.ajax({
-                    url: "{{ route('api.inventories.update.stock') }}/" + id,
-                    type: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        stock: stock,
-                        _method: "PUT",
-                    },
-                    success: function(response) {
-                        Swal.fire({
-                            title: 'Success!',
-                            text: response.message,
-                            icon: 'success',
-                            showCancelButton: false,
-                            confirmButtonText: 'OK',
-                        }).then(function() {
-                            $('#tbl_list').DataTable().ajax.reload();
-                        });
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        Swal.fire({
-                            title: 'Error!',
-                            text: 'Something went wrong!',
-                            icon: 'error',
-                            showCancelButton: false,
-                            confirmButtonText: 'OK',
-                        });
-                    }
-                });
-            },
-            allowOutsideClick: () => !Swal.isLoading()
-            });
-    }
-
     function removeItem(id, name) {
         Swal.fire({
-            title: 'Are you sure want to delete this item?',
+            title: 'Are you sure want to delete this sales?',
             text: 'This action cannot be undone!',
             icon: 'warning',
             showCancelButton: true,
@@ -139,7 +96,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: "{{ route('api.inventories.destroy') }}/" + id,
+                    url: "{{ route('api.sales.destroy') }}/" + id,
                     type: "DELETE",
                     data: {
                         _token: "{{ csrf_token() }}"
@@ -147,7 +104,7 @@
                     success: function(response) {
                         Swal.fire({
                             title: 'Success!',
-                            text: 'Item has been deleted!',
+                            text: 'Sales has been deleted!',
                             icon: 'success',
                             showCancelButton: false,
                             confirmButtonText: 'OK',
@@ -192,24 +149,6 @@
         border: 1px solid #ccc;
         border-radius: 4px;
         font-size: 14px;
-    }
-</style>
-<style>
-    .modal-table {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-    .modal-table td,
-    .modal-table th {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
-    }
-
-    .modal-table tr:nth-child(even) {
-        background-color: #dddddd;
     }
 </style>
 @endpush
