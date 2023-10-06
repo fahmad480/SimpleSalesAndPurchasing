@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['superadmin','sales','purcheses','manager'])->default('sales');
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
