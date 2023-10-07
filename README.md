@@ -9,6 +9,15 @@ This application is very simple so some feature implementations are made less co
 -   RBAC (Role Based Access Control): using simple middleware
 -   Authentication: I'm used to making use of JWT but because I'm chasing time and taking a simple concept, so I use Laravel's built-in sanctum as authentication.
 
+## Features
+
+-   Multiple role (superadmin, sales, purchases, manager)
+-   RBAC (Role Based Access Control) (simple middleware)
+-   Authentication (using laravel sanctum)
+-   Datatables (server side rendering, search, pagination, sorting, export to excel, pdf, csv, print)
+-   CRUD (Create, Read, Update, Delete)
+-   Sweetalert2 (for alert)
+
 ## Installation
 
 -   Clone this repository
