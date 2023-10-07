@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\PurchaseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,5 +49,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/', [SaleController::class, 'index'])->name('index');
         Route::get('/add', [SaleController::class, 'add'])->name('add');
         Route::get('/update/{sale?}', [SaleController::class, 'update'])->name('update');
+    });
+
+    Route::name('purchases.')->prefix('purchases')->group(function() {
+        Route::get('/details/{purchase?}', [PurchaseController::class, 'view'])->name('view');
+        Route::get('/', [PurchaseController::class, 'index'])->name('index');
+        Route::get('/add', [PurchaseController::class, 'add'])->name('add');
+        Route::get('/update/{purchase?}', [PurchaseController::class, 'update'])->name('update');
     });
 });

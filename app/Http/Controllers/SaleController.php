@@ -22,17 +22,17 @@ class SaleController extends Controller
 
         if (request()->ajax()) {
             if (session('role') == 'sales') {
-                $inventories = Sale::with(['user', 'saleDetails'])->where('user_id', auth()->user()->id)->get();
+                $sales = Sale::with(['user', 'saleDetails.inventory'])->where('user_id', auth()->user()->id)->get();
             } else {
-                $inventories = Sale::with(['user', 'saleDetails'])->get();
+                $sales = Sale::with(['user', 'saleDetails.inventory'])->get();
             }
-            return DataTables::of($inventories)
-                ->addColumn('user', function($rents) {
-                    return $rents->user->name;
+            return DataTables::of($sales)
+                ->addColumn('user', function($e) {
+                    return $e->user->name;
                 })
-                ->addColumn('total', function($rents) {
-                    return $rents->saleDetails->sum(function($detail) {
-                        return $detail->qty * $detail->price;
+                ->addColumn('total', function($e) {
+                    return $e->saleDetails->sum(function($detail) {
+                        return $detail->price;
                     });
                 })
                 ->make();

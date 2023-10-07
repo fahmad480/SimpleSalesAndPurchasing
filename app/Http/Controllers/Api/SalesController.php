@@ -128,7 +128,7 @@ class SalesController extends Controller
                 foreach($request->items as $item) {
                     $inventory = Inventory::find($item['inventory_id']);
                     if($inventory) {
-                        $inventory->stock = $inventory->stock + $sales->saleDetails->where('inventory_id', $item['inventory_id'])->first()->qty;
+                        $inventory->stock = $inventory->stock + (isset($sales->saleDetails->where('inventory_id', $item['inventory_id'])->first()->qty) ? $sales->saleDetails->where('inventory_id', $item['inventory_id'])->first()->qty : 0);
                         $inventory->stock = $inventory->stock - $item['qty'];
                         $inventory->save();
                     } else {
@@ -139,6 +139,8 @@ class SalesController extends Controller
                             'data' => ''
                         ], 404);
                     }
+
+                    $sales->saleDetails()->where('inventory_id', $item['inventory_id'])->delete();
 
                     $item = SaleDetail::create([
                         'sale_id' => $sales->id,

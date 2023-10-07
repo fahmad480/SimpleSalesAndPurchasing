@@ -44,6 +44,9 @@ class PurchasesController extends Controller
     public function store(Request $request)
     {
         try {
+            $items = json_decode($request->input('items'), true);
+            $request->merge(['items' => $items]);
+
             $this->validate($request, [
                 'number' => 'required',
                 'date' => 'required|date',
@@ -76,7 +79,7 @@ class PurchasesController extends Controller
 
                 $purchases->purchaseDetails()->create([
                     'inventory_id' => $item['inventory_id'],
-                    'quantity' => $item['qty'],
+                    'qty' => $item['qty'],
                     'price' => $inventory->price,
                 ]);
             }
@@ -106,6 +109,9 @@ class PurchasesController extends Controller
     public function update(Request $request, $purchases)
     {
         try {
+            $items = json_decode($request->input('items'), true);
+            $request->merge(['items' => $items]);
+
             $this->validate($request, [
                 'number' => 'required',
                 'date' => 'required|date',
@@ -120,6 +126,7 @@ class PurchasesController extends Controller
 
             if($purchases) {
                 $purchases->update([
+                    'user_id' => auth()->user()->id,
                     'number' => $request->number,
                     'date' => $request->date,
                 ]);
@@ -127,7 +134,7 @@ class PurchasesController extends Controller
                 foreach($request->items as $item) {
                     $inventory = Inventory::find($item['inventory_id']);
                     if($inventory) {
-                        $inventory->stock = $inventory->stock - $purchases->purchaseDetails->where('inventory_id', $item['inventory_id'])->first()->qty;
+                        $inventory->stock = $inventory->stock - (isset($purchases->purchaseDetails->where('inventory_id', $item['inventory_id'])->first()->qty) ? $purchases->purchaseDetails->where('inventory_id', $item['inventory_id'])->first()->qty : 0);
                         $inventory->stock = $inventory->stock + $item['qty'];
                         $inventory->save();
                     } else {
@@ -139,10 +146,12 @@ class PurchasesController extends Controller
                         ], 404);
                     }
 
+                    $purchases->purchaseDetails()->where('inventory_id', $item['inventory_id'])->delete();
+
                     $purchases->purchaseDetails()->create([
                         'inventory_id' => $item['inventory_id'],
-                        'quantity' => $item['qty'],
-                        'price' => $inventory->price,
+                        'qty' => $item['qty'],
+                        'price' => $inventory->price * $item['qty'],
                     ]);
                 }
 
