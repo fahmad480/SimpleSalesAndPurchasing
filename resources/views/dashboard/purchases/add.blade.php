@@ -34,7 +34,7 @@
                                     Purchases Number <span class="text-meta-1">*</span>
                                 </label>
                                 <input type="text" placeholder="Input Purchases Number" id="number" name="number"
-                                    value="{{ $menu === "purchasesUpdate" ? $purchases->number : "" }}" required
+                                    value="{{ $menu === " purchasesUpdate" ? $purchases->number : "" }}" required
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium
                                 outline-none transition focus:border-primary active:border-primary
                                 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark
@@ -46,8 +46,8 @@
                                     Purchases Date <span class="text-meta-1">*</span>
                                 </label>
                                 <div class="mt-2.5 relative">
-                                    <input type="date" id="date" name="date" required value="{{ $menu === "purchasesUpdate"
-                                        ? $purchases->date : "" }}"
+                                    <input type="date" id="date" name="date" required value="{{ $menu === "
+                                        purchasesUpdate" ? $purchases->date : "" }}"
                                     class="custom-input-date custom-input-date-1 w-full rounded border-[1.5px]
                                     border-stroke bg-transparent py-3 px-5 font-medium outline-none transition
                                     focus:border-primary active:border-primary dark:border-form-strokedark
@@ -78,8 +78,7 @@
                                         @if ($menu === "purchasesUpdate")
                                         <tr id="items_sample">
                                             <td>
-                                                <select name="items[][inventory_id]" id="items[inventory_id]"
-                                                    onchange="getPrice(this)"
+                                                <select name="items[][inventory_id]" onchange="getPrice(this)"
                                                     class="item_box w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
                                                     <option value="" disabled selected>Select Item</option>
                                                     @foreach($inventories as $inventory)
@@ -111,13 +110,13 @@
                                         @foreach($purchases['purchaseDetails'] as $key => $purchaseDetail)
                                         <tr>
                                             <td>
-                                                <select name="items[][inventory_id]" id="items[inventory_id]"
-                                                    onchange="getPrice(this)"
+                                                <select name="items[][inventory_id]" onchange="getPrice(this)"
                                                     class="item_box w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
                                                     <option value="" disabled selected>Select Item</option>
                                                     @foreach($inventories as $inventory)
                                                     <option value="{{ $inventory->id }}" {{
-                                                        $purchaseDetail['inventory_id']===$inventory->id ? "selected" : ""
+                                                        $purchaseDetail['inventory_id']===$inventory->id ? "selected" :
+                                                        ""
                                                         }}
                                                         data-price="{{ $inventory->price }}">{{ $inventory->name }}
                                                     </option>
@@ -152,8 +151,7 @@
                                         @else
                                         <tr id="items_sample">
                                             <td>
-                                                <select name="items[][inventory_id]" id="items[inventory_id]"
-                                                    onchange="getPrice(this)"
+                                                <select name="items[][inventory_id]" onchange="getPrice(this)"
                                                     class="item_box w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
                                                     <option value="" disabled selected>Select Item</option>
                                                     @foreach($inventories as $inventory)
@@ -215,7 +213,7 @@
 
     $(document).ready(function () {
         items_sample = $("#items_sample").html();
-        // $('.item_box').select2();
+        $('.item_box').select2();
 
         @if ($menu === "purchasesUpdate")
         $("#items_sample").remove();
@@ -235,7 +233,8 @@
     });
 
     $("#addnewitem").click(function() {
-        $("#items").append("<tr>" + items_sample + "</tr>");
+        $("#items").append("<tr>" + items_sample + "</tr>"); //append the cloned html
+        $('.item_box').select2();
     });
 
     function removeItem(e) {

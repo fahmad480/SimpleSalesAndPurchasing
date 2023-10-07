@@ -34,7 +34,7 @@
                                     Sales Number <span class="text-meta-1">*</span>
                                 </label>
                                 <input type="text" placeholder="Input Sales Number" id="number" name="number"
-                                    value="{{ $menu === "salesUpdate" ? $sales->number : "" }}" required
+                                    value="{{ $menu === " salesUpdate" ? $sales->number : "" }}" required
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium
                                 outline-none transition focus:border-primary active:border-primary
                                 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark
@@ -46,7 +46,7 @@
                                     Sales Date <span class="text-meta-1">*</span>
                                 </label>
                                 <div class="mt-2.5 relative">
-                                    <input type="date" id="date" name="date" required value="{{ $menu === "salesUpdate"
+                                    <input type="date" id="date" name="date" required value="{{ $menu === " salesUpdate"
                                         ? $sales->date : "" }}"
                                     class="custom-input-date custom-input-date-1 w-full rounded border-[1.5px]
                                     border-stroke bg-transparent py-3 px-5 font-medium outline-none transition
@@ -78,8 +78,7 @@
                                         @if ($menu === "salesUpdate")
                                         <tr id="items_sample">
                                             <td>
-                                                <select name="items[][inventory_id]" id="items[inventory_id]"
-                                                    onchange="getPrice(this)"
+                                                <select name="items[][inventory_id]" onchange="getPrice(this)"
                                                     class="item_box w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
                                                     <option value="" disabled selected>Select Item</option>
                                                     @foreach($inventories as $inventory)
@@ -111,8 +110,7 @@
                                         @foreach($sales['saleDetails'] as $key => $saleDetail)
                                         <tr>
                                             <td>
-                                                <select name="items[][inventory_id]" id="items[inventory_id]"
-                                                    onchange="getPrice(this)"
+                                                <select name="items[][inventory_id]" onchange="getPrice(this)"
                                                     class="item_box w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
                                                     <option value="" disabled selected>Select Item</option>
                                                     @foreach($inventories as $inventory)
@@ -152,8 +150,7 @@
                                         @else
                                         <tr id="items_sample">
                                             <td>
-                                                <select name="items[][inventory_id]" id="items[inventory_id]"
-                                                    onchange="getPrice(this)"
+                                                <select name="items[][inventory_id]" onchange="getPrice(this)"
                                                     class="item_box w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
                                                     <option value="" disabled selected>Select Item</option>
                                                     @foreach($inventories as $inventory)
@@ -215,7 +212,7 @@
 
     $(document).ready(function () {
         items_sample = $("#items_sample").html();
-        // $('.item_box').select2();
+        $('.item_box').select2();
 
         @if ($menu === "salesUpdate")
         $("#items_sample").remove();
@@ -235,7 +232,8 @@
     });
 
     $("#addnewitem").click(function() {
-        $("#items").append("<tr>" + items_sample + "</tr>");
+        $("#items").append("<tr>" + items_sample + "</tr>"); //append the cloned html
+        $('.item_box').select2();
     });
 
     function removeItem(e) {
