@@ -1,3 +1,7 @@
+Nama: Faraaz Ahmad Permadi
+Email: faraazap@gmail.com
+HP: 0812 2074 9123
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://github.com/fahmad480/SimpleSalesAndPurchasing/blob/main/public/src/images/logo/logo.png?raw=true" width="400" alt="SimpleSalesAndPurchasing Logo"></a></p>
 
 ## About SimpleSalesAndPurchasing
@@ -12,9 +16,10 @@ This application is very simple so some feature implementations are made less co
 ## What's inside?
 
 -   [Laravel 10](https://laravel.com/docs/10.x)
--   [Laravel Sanctum](https://laravel.com/docs/8.x/sanctum)
+-   [Laravel Sanctum](https://laravel.com/docs/10.x/sanctum)
 -   [Yajra Datatables](https://yajrabox.com/docs/laravel-datatables/master)
 -   [Sweetalert2](https://sweetalert2.github.io/)
+-   [Select2](https://select2.org/)
 -   Tailwind CSS
 
 ## Features
@@ -35,3 +40,33 @@ This application is very simple so some feature implementations are made less co
 -   Update .env into correct database configuration
 -   Run `php artisan migrate:fresh --seed`
 -   Run `php artisan serve`
+
+## User Login
+
+### Superadmin
+
+```
+email: superadmin@example.com
+password: password
+```
+
+### Sales
+
+```
+email: sales@example.com
+password: password
+```
+
+### Purchases
+
+```
+email: purchases@example.com
+password: password
+```
+
+### Manager
+
+```
+email: manager@example.com
+password: password
+```
