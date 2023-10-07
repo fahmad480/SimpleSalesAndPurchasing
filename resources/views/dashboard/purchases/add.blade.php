@@ -46,8 +46,7 @@
                                     Purchases Date <span class="text-meta-1">*</span>
                                 </label>
                                 <div class="mt-2.5 relative">
-                                    <input type="date" id="date" name="date" required value="{{ $menu === "
-                                        purchasesUpdate" ? $purchases->date : "" }}"
+                                    <input type="date" id="date" name="date" required value="{{ $menu === "purchasesUpdate" ? $purchases->date : "" }}"
                                     class="custom-input-date custom-input-date-1 w-full rounded border-[1.5px]
                                     border-stroke bg-transparent py-3 px-5 font-medium outline-none transition
                                     focus:border-primary active:border-primary dark:border-form-strokedark
