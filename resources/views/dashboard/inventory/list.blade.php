@@ -51,8 +51,11 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script
+    src="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-1.13.6/b-2.4.2/b-html5-2.4.2/b-print-2.4.2/datatables.min.js">
+</script>
 <script type="text/javascript">
     $(document).ready(function () {
         var formatter = new Intl.NumberFormat('id-ID', {
@@ -63,6 +66,10 @@
        var tbl_lsit = $('#tbl_list').DataTable({
             processing: true,
             serverSide: true,
+            dom: 'Bfrtip',
+            buttons: [
+                'excel', 'pdf', 'csv', 'print'
+            ],
             ajax: '{{ url()->current() }}',
             columns: [
                 {data: 'id', name: 'id'},
@@ -78,7 +85,7 @@
                     $output += "<a href=\"javascript:void(0)\" onClick=\"removeItem('" + full.id + "', '" + full.name + "')\" class=\"hover:text-primary\" title=\"Remove Item\"><i class=\"fi fi-rr-trash\"></i></a>&nbsp;&nbsp;";
                     return $output;
                 }},
-            ]
+            ],
         });
     });
 
@@ -174,6 +181,9 @@
 @endpush
 
 @push('styles')
+<link
+    href="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-1.13.6/b-2.4.2/b-html5-2.4.2/b-print-2.4.2/datatables.min.css"
+    rel="stylesheet">
 <style>
     /* Custom styling for search input */
     .dataTables_wrapper .dataTables_filter input {
