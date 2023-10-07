@@ -34,7 +34,7 @@
                                     Purchases Number <span class="text-meta-1">*</span>
                                 </label>
                                 <input type="text" placeholder="Input Purchases Number" id="number" name="number"
-                                    value="{{ $menu === " purchasesUpdate" ? $purchases->number : "" }}" required
+                                    value="{{ $menu === "purchasesUpdate" ? $purchases->number : "" }}" required
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium
                                 outline-none transition focus:border-primary active:border-primary
                                 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark

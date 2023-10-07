@@ -34,7 +34,7 @@
                                     Sales Number <span class="text-meta-1">*</span>
                                 </label>
                                 <input type="text" placeholder="Input Sales Number" id="number" name="number"
-                                    value="{{ $menu === " salesUpdate" ? $sales->number : "" }}" required
+                                    value="{{ $menu === "salesUpdate" ? $sales->number : "" }}" required
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium
                                 outline-none transition focus:border-primary active:border-primary
                                 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark
@@ -46,7 +46,7 @@
                                     Sales Date <span class="text-meta-1">*</span>
                                 </label>
                                 <div class="mt-2.5 relative">
-                                    <input type="date" id="date" name="date" required value="{{ $menu === " salesUpdate"
+                                    <input type="date" id="date" name="date" required value="{{ $menu === "salesUpdate"
                                         ? $sales->date : "" }}"
                                     class="custom-input-date custom-input-date-1 w-full rounded border-[1.5px]
                                     border-stroke bg-transparent py-3 px-5 font-medium outline-none transition
