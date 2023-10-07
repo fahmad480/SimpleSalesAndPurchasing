@@ -9,6 +9,14 @@ This application is very simple so some feature implementations are made less co
 -   RBAC (Role Based Access Control): using simple middleware
 -   Authentication: I'm used to making use of JWT but because I'm chasing time and taking a simple concept, so I use Laravel's built-in sanctum as authentication.
 
+## What's inside?
+
+-   [Laravel 10](https://laravel.com/docs/10.x)
+-   [Laravel Sanctum](https://laravel.com/docs/8.x/sanctum)
+-   [Yajra Datatables](https://yajrabox.com/docs/laravel-datatables/master)
+-   [Sweetalert2](https://sweetalert2.github.io/)
+-   Tailwind CSS
+
 ## Features
 
 -   Multiple role (superadmin, sales, purchases, manager)
