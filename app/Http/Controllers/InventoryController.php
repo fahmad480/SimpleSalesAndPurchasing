@@ -8,10 +8,6 @@ use App\Models\Inventory;
 
 class InventoryController extends Controller
 {
-    public function __construct() {
-        $this->middleware('role:superadmin');
-    }
-
     public function index() {
         $data = [
             'parent' => 'Inventory',

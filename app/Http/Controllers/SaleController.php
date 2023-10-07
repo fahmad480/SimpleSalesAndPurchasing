@@ -9,10 +9,6 @@ use App\Models\Inventory;
 
 class SaleController extends Controller
 {
-    public function __construct() {
-        $this->middleware('role:superadmin|sales');
-    }
-
     public function index() {
         $data = [
             'parent' => 'Sale',

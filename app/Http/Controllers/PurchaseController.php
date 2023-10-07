@@ -9,10 +9,6 @@ use App\Models\Inventory;
 
 class PurchaseController extends Controller
 {
-    public function __construct() {
-        $this->middleware('role:superadmin|purchases');
-    }
-
     public function index() {
         $data = [
             'parent' => 'Purchase',

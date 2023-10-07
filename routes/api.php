@@ -21,7 +21,7 @@ use App\Http\Controllers\Api\SalesController;
 Route::middleware(['auth:sanctum'])->name('api.')->group(function() {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::name('inventories.')->prefix('inventories')->group(function() {
+    Route::name('inventories.')->prefix('inventories')->middleware('role:superadmin')->group(function() {
         Route::get('/', [InventoryController::class, 'index'])->name('index');
         Route::get('/{id?}', [InventoryController::class, 'show'])->name('show');
         Route::post('/', [InventoryController::class, 'store'])->name('store');
@@ -31,18 +31,18 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function() {
     });
 
     Route::name('sales.')->prefix('sales')->group(function() {
-        Route::get('/', [SalesController::class, 'index'])->name('index');
-        Route::get('/{id?}', [SalesController::class, 'show'])->name('show');
-        Route::post('/', [SalesController::class, 'store'])->name('store');
-        Route::put('/{id?}', [SalesController::class, 'update'])->name('update');
-        Route::delete('/{id?}', [SalesController::class, 'destroy'])->name('destroy');
+        Route::get('/', [SalesController::class, 'index'])->middleware('role:superadmin|sales|manager')->name('index');
+        Route::get('/{id?}', [SalesController::class, 'show'])->middleware('role:superadmin|sales|manager')->name('show');
+        Route::post('/', [SalesController::class, 'store'])->middleware('role:superadmin|sales')->name('store');
+        Route::put('/{id?}', [SalesController::class, 'update'])->middleware('role:superadmin|sales')->name('update');
+        Route::delete('/{id?}', [SalesController::class, 'destroy'])->middleware('role:superadmin|sales')->name('destroy');
     });
 
     Route::name('purchases.')->prefix('purchases')->group(function() {
-        Route::get('/', [PurchasesController::class, 'index'])->name('index');
-        Route::get('/{id?}', [PurchasesController::class, 'show'])->name('show');
-        Route::post('/', [PurchasesController::class, 'store'])->name('store');
-        Route::put('/{id?}', [PurchasesController::class, 'update'])->name('update');
-        Route::delete('/{id?}', [PurchasesController::class, 'destroy'])->name('destroy');
+        Route::get('/', [PurchasesController::class, 'index'])->middleware('role:superadmin|purchases|manager')->name('index');
+        Route::get('/{id?}', [PurchasesController::class, 'show'])->middleware('role:superadmin|purchases|manager')->name('show');
+        Route::post('/', [PurchasesController::class, 'store'])->middleware('role:superadmin|purchases')->name('store');
+        Route::put('/{id?}', [PurchasesController::class, 'update'])->middleware('role:superadmin|purchases')->name('update');
+        Route::delete('/{id?}', [PurchasesController::class, 'destroy'])->middleware('role:superadmin|purchases')->name('destroy');
     });
 });
